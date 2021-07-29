@@ -1,6 +1,6 @@
-//SELECT ELEMENTS & ADD PLACEHOLDERS
+// 1. SELECT ELEMENTS & ADD PLACEHOLDERS
 
-// 1. Create Global Variables
+// 1.1 Create Global Variables
 
 //Players guessed letters ul
 const guessedLettersArea = document.querySelector('.guessed-letters');
@@ -17,13 +17,13 @@ const message = document.querySelector('.message');
 
 //Test word
 const word = 'magnolia';
-// 6. Add a New Global Variable for Player Guesses
+// 2.3 Add a New Global Variable for Player Guesses
 const guessedLetters = [];
 
-// 2.Write a Function to Add Placeholders for Each Letter
+// 1.2 Write a Function to Add Placeholders for Each Letter
 const hiddenWord = function (word) {
     const hiddenWordLetters = [];
-//Breakbown word into hidden letters    
+    //Breakbown word into hidden letters    
     for (const letter of word) {
         console.log(letter);
         hiddenWordLetters.push('●');
@@ -34,18 +34,19 @@ const hiddenWord = function (word) {
 
 hiddenWord(word);
 
-// 3. Add an Event Listener for the Button
+// 1.3 Add an Event Listener for the Button
 guessBtn.addEventListener('click', function (e) {
-//Prevent the default behavior of clicking a button    
+    //Prevent the default behavior of clicking a button    
     e.preventDefault();
-//Empty message paragraph
+// 2.2a Empty message paragraph
     message.innerText = '';
-//Log player's guess
+    //Log player's guess
     const playerGuess = letterInput.value;
-//Validate single letter
-// 5. Validate Input in the Button Event Handler
+// 2.2 Validate Input in the Button Event Handler
+    //Validate single letter
     const niceTry = validateInput(playerGuess);
     console.log(playerGuess);
+// 2.4a Confirms that player input is returning a letter    
     if (niceTry) {
         makeGuess(playerGuess);
     }
@@ -53,11 +54,11 @@ guessBtn.addEventListener('click', function (e) {
 
 });
 
-//ACCEPT & VALIDATE PLAYER GUESSES
+// 2. ACCEPT & VALIDATE PLAYER GUESSES
 
-// 4. Create a Function to check Player’s Input
+// 2.1 Create a Function to Check Player’s Input
 const validateInput = function (input) {
-//Regular Ex: limits what characteris entered
+    //Regular Ex: limits what character is excepted
     const acceptedLetter = /[a-zA-Z]/;
     if (input.length === 0) {
     //Empty input
@@ -74,12 +75,14 @@ const validateInput = function (input) {
     }
 };
 
-// 7. Create a Function to Capture Input
+// 2.4 Create a Function to Capture Input
 const makeGuess = function (playerGuess) {
     playerGuess = playerGuess.toUpperCase();
+    //Checks if the player already guessed the same letter
     if (guessedLetters.includes(playerGuess)) {
         message.innerText = "You've tried that letter already. Please try again.";
     } else {
+    //Logs already guessed letters to the designated empty array
         guessedLetters.push(playerGuess);
         console.log(guessedLetters);
     }
