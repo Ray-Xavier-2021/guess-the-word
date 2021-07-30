@@ -25,7 +25,7 @@ const hiddenWord = function (word) {
     const hiddenWordLetters = [];
     //Breakbown word into hidden letters    
     for (const letter of word) {
-        console.log(letter);
+        //console.log(letter);
         hiddenWordLetters.push('●');
     }
     wordProgress.innerText = hiddenWordLetters.join('');
@@ -85,6 +85,56 @@ const makeGuess = function (playerGuess) {
     //Logs already guessed letters to the designated empty array
         guessedLetters.push(playerGuess);
         console.log(guessedLetters);
+// 3.1a Shows letters already guessed    
+        showGuessedLetters();
+// 3.2a Shows letter if correct
+        wordProgressUpdate(guessedLetters);        
     }
     
+};
+
+// 3. DISPLAY WORD & GUESSED LETTERS
+
+// 3.1 Create a Function to Show the Guessed Letters
+const showGuessedLetters = () => {
+//Clear guessed letters area/box    
+    guessedLettersArea.innerHTML = '';
+//Creates a placement for each letter guessed
+    for (const letter of guessedLetters) {
+        const li = document.createElement('li');
+        li.innerText = letter;
+        guessedLettersArea.append(li);
+    }               
+};
+
+// 3.2 Create a Function to Update the Word in Progress
+//Replaces symbol if correct letter is guessed
+const wordProgressUpdate = function (guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split('');
+//Holds the answer
+    const showAnswer =[];
+
+    for (const letter of wordArray) {
+//Checks if any of the guessed letters are a part of the answer
+        if (guessedLetters.includes(letter)) {
+//Removes symbol if guessed letter is correct            
+            showAnswer.push(letter.toUpperCase());
+        } else {
+            showAnswer.push('●');
+        }
+    }
+    //console.log(showAnswer);
+    wordProgress.innerText = showAnswer.join('');
+    playerWon();
+};
+
+// 3.3 Create a Function to Check If the Player Won
+//Check if word matches word in progress
+const playerWon = function () {
+    if (wordProgress.innerText === word.toUpperCase()) {
+        message.classList.add('win');
+//Congratulations message        
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+    }
 };
