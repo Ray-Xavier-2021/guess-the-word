@@ -11,7 +11,7 @@ const letterInput = document.querySelector('.letter');
 //Letter reveal progress
 const wordProgress = document.querySelector('.word-in-progress');
 //Guesses remaining
-const guessesLeft = document.querySelector('span');
+const guessesLeft = document.querySelector('.remaining span');
 //Message
 const message = document.querySelector('.message');
 
@@ -19,6 +19,9 @@ const message = document.querySelector('.message');
 const word = 'magnolia';
 // 2.3 Add a New Global Variable for Player Guesses
 const guessedLetters = [];
+// 4.1 Declare a Global Variable for the Number of Guesses
+//Guesses can be changed over time
+let remainingGuesses = 8;
 
 // 1.2 Write a Function to Add Placeholders for Each Letter
 const hiddenWord = function (word) {
@@ -87,10 +90,11 @@ const makeGuess = function (playerGuess) {
         console.log(guessedLetters);
 // 3.1a Shows letters already guessed    
         showGuessedLetters();
+// 4.2a Counts remaining guesses
+        countGuesses(playerGuess);        
 // 3.2a Shows letter if correct
-        wordProgressUpdate(guessedLetters);        
+        wordProgressUpdate(guessedLetters);                
     }
-    
 };
 
 // 3. DISPLAY WORD & GUESSED LETTERS
@@ -127,6 +131,29 @@ const wordProgressUpdate = function (guessedLetters) {
     //console.log(showAnswer);
     wordProgress.innerText = showAnswer.join('');
     playerWon();
+};
+
+// 4. FETCH WORDS & REMAINING GUESSES
+
+// 4.2 Create a Function to Count Guesses Remaining
+const countGuesses = function (playerGuess) {
+    const upperWord = word.toUpperCase();
+//Check if letter is in the word
+    if (!upperWord.includes(playerGuess)) {
+//Displays if guess is wrong
+        message.innerText = `Sorry, word does not have an ${playerGuess}.`;        
+        remainingGuesses -= 1;
+    } else {
+        message.innerText = `Good job! The word has a ${playerGuess}.`;
+    }
+//Displays if there are no more guesses    
+    if (remainingGuesses === 0) {
+        message.innerHTML = `Game Over! The word was <span class="highlight">${word}</span>.`;
+    } else if  (remainingGuesses === 1) {
+        guessesLeft.innerText = `${remainingGuesses} guess`;
+    } else {
+        guessesLeft.innerText = `${remainingGuesses} guesses`;
+    }
 };
 
 // 3.3 Create a Function to Check If the Player Won
