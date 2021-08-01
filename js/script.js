@@ -220,5 +220,4 @@ const startOver = function () {
     playAgainBtn.classList.add('hide');
 //Get a new word
     getWord();
-
  });
