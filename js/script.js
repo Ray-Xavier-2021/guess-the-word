@@ -10,15 +10,19 @@ const guessBtn = document.querySelector('.guess');
 const letterInput = document.querySelector('.letter');
 //Letter reveal progress
 const wordProgress = document.querySelector('.word-in-progress');
-//Guesses remaining
+//Guesses remaining area
+const guessesLeftArea = document.querySelector('.remaining');
+//Guesses remaining span
 const guessesLeft = document.querySelector('.remaining span');
 //Message
 const message = document.querySelector('.message');
+//Play again button
+const playAgainBtn = document.querySelector('.play-again');
 
 //Test word
 let word;
 // 2.3 Add a New Global Variable for Player Guesses
-const guessedLetters = [];
+let guessedLetters = [];
 // 4.1 Declare a Global Variable for the Number of Guesses
 //Guesses can be changed over time
 let remainingGuesses = 8;
@@ -46,7 +50,7 @@ getWord();
 // 1.2 Write a Function to Add Placeholders for Each Letter
 const hiddenWord = function (word) {
     const hiddenWordLetters = [];
-    //Breakbown word into hidden letters    
+//Breakbown word into hidden letters    
     for (const letter of word) {
         //console.log(letter);
         hiddenWordLetters.push('●');
@@ -62,10 +66,10 @@ guessBtn.addEventListener('click', function (e) {
     e.preventDefault();
 // 2.2a Empty message paragraph
     message.innerText = '';
-    //Log player's guess
+//Log player's guess
     const playerGuess = letterInput.value;
 // 2.2 Validate Input in the Button Event Handler
-    //Validate single letter
+//Validate single letter
     const niceTry = validateInput(playerGuess);
     console.log(playerGuess);
 // 2.4a Confirms that player input is returning a letter    
@@ -83,16 +87,16 @@ const validateInput = function (input) {
     //Regular Ex: limits what character is excepted
     const acceptedLetter = /[a-zA-Z]/;
     if (input.length === 0) {
-    //Empty input
+//Empty input
         message.innerText = 'Please enter a letter';
     } else if (input.length > 1) {
-    //More than one letter entered
+//More than one letter entered
         message.innerText = 'Please enter a single letter.';    
     } else if (!input.match(acceptedLetter)) {
-    //Character does not match accepted letter
+//Character does not match accepted letter
         message.innerText ='Please enter a letter from A to Z.';
     } else {
-    //Single letter entered 
+//Single letter entered 
      return input;   
     }
 };
@@ -100,7 +104,7 @@ const validateInput = function (input) {
 // 2.4 Create a Function to Capture Input
 const makeGuess = function (playerGuess) {
     playerGuess = playerGuess.toUpperCase();
-    //Checks if the player already guessed the same letter
+//Checks if the player already guessed the same letter
     if (guessedLetters.includes(playerGuess)) {
         message.innerText = "You've tried that letter already. Please try again.";
     } else {
@@ -168,6 +172,8 @@ const countGuesses = function (playerGuess) {
 //Displays if there are no more guesses    
     if (remainingGuesses === 0) {
         message.innerHTML = `Game Over! The word was <span class="highlight">${word}</span>.`;
+//Restarts the game
+        startOver(); 
     } else if  (remainingGuesses === 1) {
         guessesLeft.innerText = `${remainingGuesses} guess`;
     } else {
@@ -182,7 +188,37 @@ const playerWon = function () {
         message.classList.add('win');
 //Congratulations message        
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+//Restarts the game
+    startOver();        
     }
 };
 
+// 5. PLAY IT AGAIN!
 
+//Restarts the game
+const startOver = function () {
+//Hides these elements when the game is over
+    guessBtn.classList.add('hide');
+    guessesLeftArea.classList.add('hide');
+    guessedLettersArea.classList.add('hide');
+//Display the play again button
+    playAgainBtn.classList.remove('hide');
+};
+ // 5.1 Add a Click Event to the Play Again Button
+ playAgainBtn.addEventListener('click', function () {
+     message.classList.remove('win');
+     message.innerText = '';
+     guessedLettersArea.innerHTML = '';
+     remainingGuesses = 8;
+     guessedLetters = [];
+     guessesLeft.innerText = `${remainingGuesses} guesses`;
+//Displays these elements when the game restarts
+    guessBtn.classList.remove('hide');
+    guessesLeftArea.classList.remove('hide');
+    guessedLettersArea.classList.remove('hide');
+//Hides the play again button
+    playAgainBtn.classList.add('hide');
+//Get a new word
+    getWord();
+
+ });
