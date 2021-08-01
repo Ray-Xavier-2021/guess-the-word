@@ -16,12 +16,32 @@ const guessesLeft = document.querySelector('.remaining span');
 const message = document.querySelector('.message');
 
 //Test word
-const word = 'magnolia';
+let word;
 // 2.3 Add a New Global Variable for Player Guesses
 const guessedLetters = [];
 // 4.1 Declare a Global Variable for the Number of Guesses
 //Guesses can be changed over time
 let remainingGuesses = 8;
+
+// 4.3 Add an Async Function
+const getWord = async function () {
+//Request API containing words    
+    const response = await fetch('https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt');
+//Creates A list of the words from API
+    const words = await response.text();
+    //console.log(words);
+//Creates a dilimeter that seperates each word in array with a line break
+    const wordArray = words.split('\n');
+    //console.log(wordArray);    
+//Grab a random word from the index
+        const randomIndex = Math.floor(Math.random() * wordArray.length);
+        word = wordArray[randomIndex].trim();
+        hiddenWord(word);
+};
+
+// 4.4 Call the New Function & Test the Game
+//Start
+getWord();
 
 // 1.2 Write a Function to Add Placeholders for Each Letter
 const hiddenWord = function (word) {
@@ -33,9 +53,8 @@ const hiddenWord = function (word) {
     }
     wordProgress.innerText = hiddenWordLetters.join('');
     //console.log(hiddenWordLetters);
+    //hiddenWord(word);
 };
-
-hiddenWord(word);
 
 // 1.3 Add an Event Listener for the Button
 guessBtn.addEventListener('click', function (e) {
@@ -165,3 +184,5 @@ const playerWon = function () {
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
 };
+
+
